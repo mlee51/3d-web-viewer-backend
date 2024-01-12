@@ -10,11 +10,14 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const pool = new Pool({
-    user: 'postgres',
-    host: 'database-1.cfuiw0agkw4c.us-east-2.rds.amazonaws.com',
-    database: 'postgres',
-    password: 'Newlake929!',
+    user: "postgres",
+    host: "database-1.cfuiw0agkw4c.us-east-2.rds.amazonaws.com",
+    database: "postgres",
+    password: "Newlake929!",
     port: 5432,
+    ssl: {
+        rejectUnauthorized: false
+    }
 })
 
 const storage = multer.memoryStorage()
