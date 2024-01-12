@@ -80,9 +80,33 @@ app.get('/models', async (req, res) => {
     }
 })
 
-app.listen(3001, () => {
-    console.log('Server running on port 3001')
-})
+app.get('/testdb', async (req, res) => {
+    try {
+        const client = await pool.connect();
+        res.status(200).json({ message: 'Database connection successful' });
+        client.release();
+    } catch (error) {
+        console.error('Error connecting to database: ', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+app.listen(3001, async () => {
+    try {
+        const client = await pool.connect();
+        console.log('Connected to the database');
+
+        // You can add any additional setup or log messages here
+
+        client.release();
+    } catch (error) {
+        console.error('Error connecting to database: ', error);
+    }
+
+    console.log('Server running on port 3001');
+});
+
 
 async function fetchAvailableModels() {
     try {
