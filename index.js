@@ -4,8 +4,9 @@ const cors = require('cors')
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
-// var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
-// var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+var privateKey  = fs.readFileSync('server.key');
+var certificate = fs.readFileSync('server.crt');
+var credentials = {key: privateKey, cert: certificate};
 const { Pool } = require('pg')
 const app = express()
 
@@ -103,6 +104,9 @@ app.get('/testdb', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+var httpsServer = https.createServer(credentials, app);
+httpsServer.listen(443);
 
 app.listen(80, async () => {
     try {
