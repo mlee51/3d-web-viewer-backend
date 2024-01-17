@@ -4,8 +4,8 @@ const cors = require('cors')
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
-var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
-var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+// var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
+// var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
 const { Pool } = require('pg')
 const app = express()
 
@@ -15,8 +15,9 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
+app.get('/.well-known/pki-validation/93DAB2C3E2180E089CE9DD54F4C0908F.txt', (req, res) => {
+    res.sendFile('93DAB2C3E2180E089CE9DD54F4C0908F.txt', { root: __dirname });
+});
 
 const pool = new Pool({
     user: "postgres",
@@ -102,11 +103,6 @@ app.get('/testdb', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
-app.get('/.well-known/pki-validation/93DAB2C3E2180E089CE9DD54F4C0908F.txt',(res,req)=>{
-    res.sendFile('93DAB2C3E2180E089CE9DD54F4C0908F.txt' , { root : __dirname})
-})
-
 
 app.listen(3001, async () => {
     try {
