@@ -106,9 +106,8 @@ app.get('/testdb', async (req, res) => {
 });
 
 var httpsServer = https.createServer(credentials, app);
-httpsServer.listen(443);
 
-app.listen(80, async () => {
+httpsServer.listen(443, async () => {
     try {
         const client = await pool.connect();
         console.log('Connected to the database');
@@ -120,7 +119,7 @@ app.listen(80, async () => {
         console.error('Error connecting to database: ', error);
     }
 
-    console.log('Server running on port 80');
+    console.log('Server running on port 443');
 });
 
 
